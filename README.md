@@ -22,3 +22,8 @@ yarn lint
 
 ### Customize configuration
 See [Configuration Reference](https://cli.vuejs.org/config/).
+# 页面划分
+## Title 组件
+## Navigation 组件
+## Content 组件
+## Bottom 组件

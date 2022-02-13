@@ -1,7 +1,7 @@
 .DS_Store
 node_modules
 /dist
-
+超声科图像管理系统使用说明
 
 # local env files
 .env.local
