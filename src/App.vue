@@ -2,19 +2,16 @@
   <Title id="title"></Title>
   <Navigation id="navigation"></Navigation>
   <Content id="content"></Content>
-  <Bottom id="bottom"></Bottom>
 </template>
 <script>
 import Navigation from './components/Navigation.vue'
 import Title from './components/Title.vue'
 import Content from './components/Content.vue'
-import Bottom from './components/Bottom.vue'
 export default {
     components: {
     'Title': Title,
     'Navigation': Navigation,
     'Content': Content,
-    'Bottom': Bottom
   }
 }
 </script>
@@ -28,6 +25,10 @@ export default {
   flex-flow: column nowrap;
   width: 100%;
   height: 100%;
+}
+*{
+  margin: 0;
+  padding: 0;
 }
 
 html,body{
@@ -47,13 +48,10 @@ html,body{
 
 #content {
   width: 100%;
-  height : 70%;
+  height : 81%;
 }
 
-#bottom {
-  width: 100%;
-  height: 11%;
-}
+
 
 
 #nav a.router-link-exact-active {
