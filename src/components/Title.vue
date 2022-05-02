@@ -1,16 +1,13 @@
 <template>
-  <img src="../assets/bigTitle.jpg" alt="">
+  <img src="../assets/bigTitle.jpg" alt="" />
 </template>
 
 <script>
-export default {
-
-}
+export default {};
 </script>
 
 <style>
 #t {
-    background-color: aquamarine;
+  background-color: aquamarine;
 }
-
 </style>

@@ -1,0 +1,30 @@
+.filter-title {
+    font-size: 16px;
+    font-weight: 800;
+    margin: 10px;
+}
+
+.filter-title::before {
+
+}
+
+.filter-line {
+    display: flex;
+    flex-direction: row;
+    font-size: 16px;
+    height: 32px;
+    line-height: 32px;
+    margin-right: 20px;
+}
+
+.filter-line span {
+}
+
+.filter-button-group {
+    display: flex;
+    flex-direction: row;
+}
+.flex-div {
+    display: flex;
+    flex-direction: column;
+}

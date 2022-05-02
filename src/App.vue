@@ -1,19 +1,15 @@
 <template>
-  <Title id="title"></Title>
-  <Navigation id="navigation"></Navigation>
-  <Content id="content"></Content>
+  <!-- <Title id="title"></Title> -->
+  <router-view></router-view>
 </template>
 <script>
-import Navigation from './components/Navigation.vue'
-import Title from './components/Title.vue'
-import Content from './components/Content.vue'
+// import Title from './components/Title.vue'
 export default {
-    components: {
-    'Title': Title,
-    'Navigation': Navigation,
-    'Content': Content,
-  }
-}
+  // components: {
+  //   Title,
+  // },
+  methods: {},
+};
 </script>
 
 <style>
@@ -26,33 +22,22 @@ export default {
   width: 100%;
   height: 100%;
 }
-*{
+
+* {
   margin: 0;
   padding: 0;
 }
 
-html,body{
+html,
+body {
   width: 100%;
   height: 100%;
 }
 
 #title {
   width: 100%;
-  height:14%;
+  height: 14%;
 }
-
-#navigation {
-  width: 100%;
-  height:5%;
-}
-
-#content {
-  width: 100%;
-  height : 81%;
-}
-
-
-
 
 #nav a.router-link-exact-active {
   color: #42b983;

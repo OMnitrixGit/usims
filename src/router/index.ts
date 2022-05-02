@@ -1,60 +1,70 @@
-import { createRouter, createWebHistory, RouteRecordRaw } from "vue-router";
-import All from "../pages/All.vue";
+import {createRouter, createWebHistory, RouteRecordRaw} from "vue-router";
+import Layout from "@/layout/Index.vue";
+
 const routes: Array<RouteRecordRaw> = [
-  {
-    path: "/all",
-    name: "All",
-    component: All,
-  },
-  {
-    path: "/entry",
-    name: "Entry",
-    // route level code-splitting
-    // this generates a separate chunk (about.[hash].js) for this route
-    // which is lazy-loaded when the route is visited.
-    component: () =>
-      import(/* webpackChunkName: "about" */ "../pages/Entry.vue"),
-  },
-  {
-    path: "/search",
-    name: "Search",
-    // route level code-splitting
-    // this generates a separate chunk (about.[hash].js) for this route
-    // which is lazy-loaded when the route is visited.
-    component: () =>
-      import(/* webpackChunkName: "about" */ "../pages/Search.vue"),
-  },
-  {
-    path: "/my",
-    name: "My",
-    // route level code-splitting
-    // this generates a separate chunk (about.[hash].js) for this route
-    // which is lazy-loaded when the route is visited.
-    component: () => import(/* webpackChunkName: "about" */ "../pages/My.vue"),
-  },
-  {
-    path: "/info",
-    name: "Info",
-    // route level code-splitting
-    // this generates a separate chunk (about.[hash].js) for this route
-    // which is lazy-loaded when the route is visited.
-    component: () =>
-      import(/* webpackChunkName: "about" */ "../pages/Info.vue"),
-  },
-  {
-    path: "/account",
-    name: "Account",
-    // route level code-splitting
-    // this generates a separate chunk (about.[hash].js) for this route
-    // which is lazy-loaded when the route is visited.
-    component: () =>
-      import(/* webpackChunkName: "about" */ "../pages/Account.vue"),
-  },
+    {
+        path: "/",
+        name: "login",
+        component: import("../pages/Login.vue"),
+    },
+    {
+        path: "/register",
+        name: "register",
+        component: import("../pages/Register.vue"),
+    },
+    {
+        path: "/user/record",
+        name: "userRecord",
+        component: import("../pages/UserRecord.vue"),
+    },
+    {
+        path: "/layout",
+        name: "Layout",
+        redirect: "/layout/all",
+        component: Layout,
+        children: [
+            {
+                path: "all",
+                name: "All",
+                component: import("../pages/RecordList/Index.vue"),
+            },
+
+            {
+                path: "entry",
+                name: "Entry",
+                component: () =>
+                    import(/* webpackChunkName: "about" */ "../pages/RecordList/Entry.vue"),
+            },
+            {
+                path: "my",
+                name: "My",
+                component: () =>
+                    import(/* webpackChunkName: "about" */ "../pages/RecordList/MyRecord.vue"),
+            },
+            {
+                path: "info",
+                name: "Info",
+                component: () =>
+                    import(/* webpackChunkName: "about" */ "../pages/Setting/Index.vue"),
+            },
+            {
+                path: "account",
+                name: "Account",
+                component: () =>
+                    import(/* webpackChunkName: "about" */ "../pages/User/UserList.vue"),
+            },
+        ],
+    },
+    {
+        path: "/register",
+        name: "register",
+        component: import("../pages/Register.vue"),
+    },
 ];
 
 const router = createRouter({
-  history: createWebHistory(process.env.BASE_URL),
-  routes,
+    history: createWebHistory(process.env.BASE_URL),
+    routes,
 });
 
 export default router;
