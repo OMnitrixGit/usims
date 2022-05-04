@@ -4,15 +4,15 @@
     <div class="filter">
       <div class="filter-line">
         <span>编号：</span>
-        <el-input style="width:200px" v-model="input" placeholder="通过编号筛选"/>
+        <el-input style="width:200px" v-model="filter_id" placeholder="通过编号筛选"/>
       </div>
       <div class="filter-line">
         <span>姓名：</span>
-        <el-input style="width:200px" v-model="input" placeholder="通过姓名筛选"/>
+        <el-input style="width:200px" v-model="filter_name" placeholder="通过姓名筛选"/>
       </div>
       <div class="filter-line">
         <span>诊断人：</span>
-        <el-input style="width:200px" v-model="input" placeholder="通过诊断人筛选"/>
+        <el-input style="width:200px" v-model="filter_doctor_name" placeholder="通过诊断人筛选"/>
       </div>
       <div class="filter-button-group">
         <el-button type="primary">查询</el-button>
@@ -25,11 +25,11 @@
       <el-table-column type="selection" width="55"/>
       <el-table-column sortable prop="id" label="编号"/>
       <el-table-column prop="name" label="姓名"/>
-      <el-table-column prop="sex" label="性别"/>
+      <el-table-column prop="gender" label="性别"/>
       <el-table-column prop="age" label="年龄"/>
-      <el-table-column prop="phone" label="联系方式"/>
-      <el-table-column prop="doctor" label="诊断人"/>
-      <el-table-column prop="key" label="关键词"/>
+      <el-table-column prop="contact" label="联系方式"/>
+      <el-table-column prop="doctor_name" label="诊断人"/>
+      <el-table-column prop="keywords" label="关键词"/>
       <el-table-column align='center' label="操作" width="400px">
         <template #default="scope">
           <el-button type="primary" @click="edit(scope)">修改</el-button>
@@ -41,22 +41,17 @@
 </template>
 
 <script>
+import axios, * as others from 'axios';
+import global from '../Global.vue'
 export default {
   data() {
     return {
+      filter_id:"",
+      filter_name:"",
+      filter_doctor_name:"",
       scope: {},
       imageUrl: [],
       tableData: [
-        {
-          id: '1',
-          name: '2',
-          sex: "3",
-          age: '4',
-          phone: '5',
-          doctor: '6',
-          key: '7',
-          click: '8'
-        },
       ]
     }
   },
@@ -64,6 +59,18 @@ export default {
     edit(scope) {
       this.row = scope.row
     }
+  },
+  created() {
+    console.log("当前登录工号 : " + global.loginWorkNumber);
+    let params = {
+      workNumber : global.loginWorkNumber
+    }
+    axios.get("http://localhost:3000/getcases",{params}).then((response) => {
+      console.log(response.data)
+      this.tableData = response.data
+    }).catch(error => {
+      alert("后台错误，请联系管理员排查" + error)
+    })
   }
 };
 </script>

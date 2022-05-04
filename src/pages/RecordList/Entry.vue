@@ -3,37 +3,37 @@
     <div class="flex-div" style="margin-left: 100px;">
       <div class="filter-line">
         <span>编号：</span>
-        <el-input style="width:200px" v-model="params.value" placeholder="请输入编号"/>
+        <el-input style="width:200px" v-model="params.id" placeholder="请输入编号"/>
       </div>
       <div class="filter-line">
         <span>姓名：</span>
-        <el-input style="width:200px" v-model="params.value" placeholder="请输入姓名"/>
+        <el-input style="width:200px" v-model="params.name" placeholder="请输入姓名"/>
       </div>
       <div class="filter-line">
         <span>性别：</span>
-        <el-input style="width:200px" v-model="params.value" placeholder="请输入性别"/>
+        <el-input style="width:200px" v-model="params.gender" placeholder="请输入性别"/>
       </div>
       <div class="filter-line">
         <span>年龄：</span>
-        <el-input style="width:200px" v-model="params.value" placeholder="请输入年龄"/>
+        <el-input style="width:200px" v-model="params.age" placeholder="请输入年龄"/>
       </div>
       <div class="filter-line">
         <span>联系方式：</span>
-        <el-input style="width:200px" v-model="params.value" placeholder="请输入联系方式"/>
+        <el-input style="width:200px" v-model="params.contact" placeholder="请输入联系方式"/>
       </div>
       <div class="filter-line">
         <span>关键词：</span>
-        <el-input style="width:200px" v-model="params.value" placeholder="请输入关键词"/>
+        <el-input style="width:200px" v-model="params.keywords" placeholder="请输入关键词"/>
       </div>
       <div class="filter-line">
         <span>诊断人：</span>
-        <el-input style="width:200px" v-model="params.value" placeholder="请输入诊断人"/>
+        <el-input style="width:200px" v-model="params.doctor_name" placeholder="请输入诊断人"/>
       </div>
       <div class="filter-line">
         <span>诊断日期：</span>
         <el-date-picker
             style="width: 200px"
-            v-model="params.value1"
+            v-model="params.diagnose_time"
             type="datetime"
             placeholder="选择诊断日期"
         />
@@ -42,15 +42,15 @@
         <span>复查时间：</span>
         <el-date-picker
             style="width: 200px"
-            v-model="params.value1"
+            v-model="params.revisit_time"
             type="datetime"
             placeholder="选择复查时间"
         />
       </div>
       <div class="filter-line">
         <span>是否复查：</span>
-        <el-radio v-model="params.radio1" label="1" size="large">是</el-radio>
-        <el-radio v-model="params.radio1" label="2" size="large">否</el-radio>
+        <el-radio v-model="params.need_revisit" label="1" size="large" >是</el-radio>
+        <el-radio v-model="params.need_revisit" label="0" size="large" >否</el-radio>
       </div>
 
     </div>
@@ -59,7 +59,7 @@
         <div class="filter-line">
           <span>诊断：</span>
           <el-input
-              v-model="params.textarea2"
+              v-model="params.diagnostic_result"
               :autosize="{ minRows: 6, maxRows: 10 }"
               type="textarea"
               style="width:200px"
@@ -74,11 +74,12 @@
 
   </div>
   <div class="sub">
-    <el-button type="primary">立即提交</el-button>
+    <el-button type="primary" @click="submit">立即提交</el-button>
   </div>
 </template>
 
 <script>
+import axios, * as others from 'axios';
 import { fabric } from 'fabric'
 export default {
   data() {
@@ -86,9 +87,18 @@ export default {
       imgObj: "",
       canvas: "",
       params: {
-        textarea2: "",
-        value: "",
-        value1: "",
+        id: "",
+        name: "",
+        gender:"",
+        age:"",
+        contact:"",
+        keywords:"",
+        diagnostic_result: "",
+        diagnostic_photo:"",
+        doctor_name:"",
+        diagnose_time:"",
+        need_revisit:"0",
+        revisit_time:"",
       }
     }
   },
@@ -96,6 +106,26 @@ export default {
     this.init()
   },
   methods: {
+    submit(){
+      console.log(this.params)
+      if (this.params.id === "" || this.params.name === "" || this.params.gender === "" ||
+          this.params.age === "" || this.params.contact ==="" || this.params.keywords === "" ||
+          this.params.doctor_name === "" || this.params.diagnose_time === "" ||
+          this.diagnostic_result === ""){
+          alert("除复查时间外其余不可为空")
+          return
+      }
+      axios.post("http://localhost:3000/addcase",{params:this.params}).then(response => {
+        console.log(response.data)
+        switch (response.data) {
+         default:
+          alert("提交病例成功")
+          console.log("提交病例成功")
+        }
+      }).catch(error => {
+        alert("后台错误，请联系管理员排查")
+      })
+    },
     selectImage(e) {
       let file = e.target.files[0]
       if (!e || !window.FileReader) return  // 判断是否支持FileReader

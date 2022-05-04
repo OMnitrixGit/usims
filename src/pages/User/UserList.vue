@@ -21,17 +21,17 @@
       <el-table-column align='center' type="selection" width="55"/>
       <el-table-column align='center' sortable prop="id" label="id"/>
       <el-table-column align='center' sortable prop="workNumber" label="工号"/>
-      <el-table-column align='center' prop="fullName" label="姓名"/>
-      <el-table-column align='center' prop="sex" label="性别"/>
-      <el-table-column align='center' prop="phoneNumber" label="联系方式"/>
-      <el-table-column align='center' prop="admin" label="权限">
+      <el-table-column align='center' prop="name" label="姓名"/>
+      <el-table-column align='center' prop="gender" label="性别"/>
+      <el-table-column align='center' prop="contact" label="联系方式"/>
+      <el-table-column align='center' prop="permission" label="权限">
         <template #default="scope">
-          <span>{{ scope.row.admin === 1 ? "管理员" : "普通用户" }}</span>
+          <span>{{ scope.row.permission === "G" ? "管理员" : "普通用户" }}</span>
         </template>
       </el-table-column>
-      <el-table-column align='center' prop="status" label="审批状态">
+      <el-table-column align='center' prop="approved" label="审批状态">
         <template #default="scope">
-          <span>{{ scope.row.status === 0 ? "未通过审批" : "已通过审批" }}</span>
+          <span>{{ scope.row.approved === "未审批" ? "未通过审批" : "已通过审批" }}</span>
         </template>
       </el-table-column>
       <el-table-column align='center' label="操作" width="400px">
@@ -98,14 +98,18 @@
 </template>
 
 <script>
-import {get_user_page} from "@/api/user";
+import axios, * as others from 'axios';
 
 export default {
   data() {
     return {
       tableData: [],
       editVisible: false,
-      row: {},
+      row: {
+        fullName:"",
+        sex:"",
+        phoneNumber:"",
+      },
       sexOption: [
         {value: '男'},
         {value: '女'}
@@ -122,13 +126,13 @@ export default {
   },
   methods: {
     getUserPage() {
-      get_user_page(this.pamars).then(res => {
-        console.log("请求接口 ====>", res)
-        this.tableData = res.data.records;
-        this.total = res.data.total;
+      axios.get("http://localhost:3000/allaccounts").then(res => {
+        console.log(res.data)
+        this.tableData = res.data
       }).catch(err => {
-        console.log("请求失败 ====>", err)
-      })
+        console.log(err)
+        alert("后台错误，请联系管理员排查")
+      });
     },
     handleCurrentChange() {
       this.getUserPage();

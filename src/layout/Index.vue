@@ -2,7 +2,7 @@
   <div id="layout">
     <div id="menu">
       <div class="menu-hander">
-        <span>诊疗信息管理系统</span>
+        <span @click="backToLogin()">诊疗信息管理系统</span>
       </div>
       <el-menu
           :default-active="defaultActive"
@@ -48,6 +48,13 @@ export default {
   },
   data() {
     return {
+    }
+  },
+  methods:{
+    backToLogin(){
+      this.$router.push({
+        name:"login"
+      })
     }
   },
   computed: {

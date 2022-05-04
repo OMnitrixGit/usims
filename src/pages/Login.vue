@@ -10,7 +10,7 @@
       </div>
       <div class="login-item">
         <span>密码：</span>
-        <el-input style="width:200px" show-password v-model="workNumber" placeholder="请输入密码"/>
+        <el-input style="width:200px" show-password v-model="password" placeholder="请输入密码"/>
       </div>
       <div class="login-item">
         <el-button type="primary" @click="login">登录</el-button>
@@ -22,18 +22,46 @@
 </template>
 
 <script>
+import axios, * as others from 'axios';
+import global from '../pages/Global';
 export default {
   data() {
     return {
       workNumber: '',
+      password:'',
       isAdmin: true
     }
   },
   methods: {
     login() {
-      console.log(1);
-      this.$router.push({
-        name:this.isAdmin?"All":"userRecord"
+      let url = `http://localhost:3000/${this.isAdmin ? "doctor_login" : "patient_login"}`
+      if(this.workNumber === '') {alert(`${this.isAdmin ? "工号" : "手机号"}不能为空`); return}
+      if(this.password === '') {alert("密码不能为空"); return}
+      let params = this.isAdmin ? {
+        workNumber:this.workNumber,
+        password:this.password
+      } : {
+        contact:this.workNumber,
+        password:this.password
+      };
+      axios.get(url,{params: params}).then((response) => {
+        console.log(response.data)
+        switch (response.data) {
+          case 0:
+            alert(`无此${this.isAdmin ? "工号" : "手机号"}`)
+            return
+          case 1:
+            alert("密码不正确")
+            return 
+          default:
+            console.log("验证通过，登录成功")
+            global.loginWorkNumber = this.workNumber
+            this.$router.push({
+              name:this.isAdmin?"All":"userRecord"
+            })
+        }
+      }).catch(error => {
+        alert("后台错误，请联系管理员排查")
       })
     },
     goRegister() {

@@ -2,23 +2,23 @@
   <div class="setting">
     <div class="filter-line">
       <span>工号：</span>
-      <el-input style="width:200px" v-model="value" placeholder="输入工号"/>
+      <el-input style="width:200px" v-model="params.workNumber" placeholder="输入工号"/>
     </div>
     <div class="filter-line">
       <span>姓名：</span>
-      <el-input style="width:200px" v-model="value" placeholder="输入姓名"/>
+      <el-input style="width:200px" v-model="params.name" placeholder="输入姓名"/>
     </div>
     <div class="filter-line">
       <span>性别：</span>
-      <el-input style="width:200px" v-model="value" placeholder="输入性别"/>
+      <el-input style="width:200px" v-model="params.gender" placeholder="输入性别"/>
     </div>
     <div class="filter-line">
       <span>手机：</span>
-      <el-input style="width:200px" v-model="value" placeholder="输入手机号"/>
+      <el-input style="width:200px" v-model="params.contact" placeholder="输入手机号"/>
     </div>
   </div>
   <div class="sub">
-    <el-button type="primary">立即提交</el-button>
+    <el-button type="primary" @click="modify_info()">立即提交</el-button>
     <el-button type="primary" @click="editPasswordVisible = true">修改密码</el-button>
   </div>
   <el-dialog
@@ -40,7 +40,7 @@
         <el-input style="width:200px" show-password v-model="params.repeatNewPassword" placeholder="确认新密码"/>
       </div>
       <div class="edit-b">
-        <el-button type="primary" @click="editPasswordVisible = false">确认</el-button>
+        <el-button type="primary" @click="changePassword()">确认</el-button>
         <el-button @click="editPasswordVisible = false">取消</el-button>
       </div>
     </div>
@@ -48,6 +48,9 @@
 </template>
 
 <script>
+import axios, * as others from 'axios';
+import global from '../Global.vue'
+import qs from 'qs'
 export default {
   data() {
     return {
@@ -56,10 +59,64 @@ export default {
         rowPassword: "",
         newPassword: "",
         repeatNewPassword: "",
+        workNumber:"",
+        name:"",
+        gender:"",
+        contact:"",
+        loginWorkNumber:""
       },
-      value: ""
     }
-  }
+  },
+  methods: {
+    modify_info(){
+      let params = {
+        originWorkNumber: global.loginWorkNumber,
+        newWorkNumber: this.params.workNumber,
+        newName:this.params.name,
+        newGender:this.params.gender,
+        newContact:this.params.contact
+      }
+      axios.post("http://localhost:3000/updateInfo", {params: params}).then(res => {
+        switch (res.data) {
+          default:
+            alert("修改成功")
+            return
+        }
+      }).catch(err => {
+        console.log(err)
+        alert("后台错误，请联系管理员排查")
+      })
+    },
+    changePassword(){
+      if (this.params.repeatNewPassword !== this.params.newPassword) {
+        console.log(this.params.rowPassword + " " + this.params.newPassword)
+        alert("两次输入密码不一致，请重新输入")
+        return
+      }
+      let params = {
+        loginWorkNumber: global.loginWorkNumber,
+        originPassword: this.params.rowPassword,
+        newPassword: this.params.newPassword
+      }
+      axios.post("http://localhost:3000/changePassword", {params: params}).then(res => {
+        switch (res.data) {
+          case -1:
+            alert("后台错误")
+            break
+          case 0:
+            alert("旧密码不正确")
+            break
+          default:
+            alert("修改成功")
+            this.editPasswordVisible = false
+            break
+        }
+      }).catch(err => {
+        console.log(err)
+        alert("后台错误，请联系管理员排查")
+      })
+    }
+  },
 }
 </script>
 
